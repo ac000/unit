@@ -181,7 +181,6 @@ typedef struct {
     size_t                 max_body_size;
     size_t                 proxy_header_buffer_size;
     size_t                 proxy_buffer_size;
-    size_t                 proxy_buffers;
 
     nxt_msec_t             idle_timeout;
     nxt_msec_t             header_read_timeout;
