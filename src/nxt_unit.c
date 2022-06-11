@@ -3812,13 +3812,12 @@ static int
 nxt_unit_shm_open(nxt_unit_ctx_t *ctx, size_t size)
 {
     int              fd;
-    nxt_unit_impl_t  *lib;
-
-    lib = nxt_container_of(ctx->unit, nxt_unit_impl_t, unit);
 
 #if (NXT_HAVE_MEMFD_CREATE || NXT_HAVE_SHM_OPEN)
+    nxt_unit_impl_t  *lib;
     char             name[64];
 
+    lib = nxt_container_of(ctx->unit, nxt_unit_impl_t, unit);
     snprintf(name, sizeof(name), NXT_SHM_PREFIX "unit.%d.%p",
              lib->pid, (void *) (uintptr_t) pthread_self());
 #endif
