@@ -140,7 +140,7 @@ nxt_array_copy(nxt_mp_t *mp, nxt_array_t *dst, nxt_array_t *src)
                 return NULL;
             }
 
-            nxt_memcpy(data, src->elts + (i * size), size);
+            nxt_memcpy(data, (char *) src->elts + (i * size), size);
         }
     }
 
