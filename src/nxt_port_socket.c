@@ -1237,7 +1237,7 @@ nxt_port_read_msg_process(nxt_task_t *task, nxt_port_t *port,
     } else {
         if (nxt_slow_path(msg->port_msg.mf != 0)) {
 
-            if (msg->port_msg.mmap && msg->cancelled == 0) {
+            if (msg->port_msg.mmap) {
                 nxt_port_mmap_read(task, msg);
                 b = msg->buf;
             }
@@ -1251,25 +1251,18 @@ nxt_port_read_msg_process(nxt_task_t *task, nxt_port_t *port,
             fmsg->port_msg.nf = 0;
             fmsg->port_msg.mf = 0;
 
-            if (nxt_fast_path(msg->cancelled == 0)) {
-                msg->buf = NULL;
-                msg->fd[0] = -1;
-                msg->fd[1] = -1;
-                b = NULL;
+            msg->buf = NULL;
+            msg->fd[0] = -1;
+            msg->fd[1] = -1;
+            b = NULL;
 
-            } else {
-                nxt_port_close_fds(msg->fd);
-            }
         } else {
-            if (nxt_fast_path(msg->cancelled == 0)) {
-
-                if (msg->port_msg.mmap) {
-                    nxt_port_mmap_read(task, msg);
-                    b = msg->buf;
-                }
-
-                port->handler(task, msg);
+            if (msg->port_msg.mmap) {
+                nxt_port_mmap_read(task, msg);
+                b = msg->buf;
             }
+
+            port->handler(task, msg);
         }
     }
 
