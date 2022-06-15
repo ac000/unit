@@ -79,15 +79,6 @@ typedef struct {
 } nxt_http_route_pattern_t;
 
 
-typedef struct {
-    uint16_t                       hash;
-    uint16_t                       name_length;
-    uint32_t                       value_length;
-    u_char                         *name;
-    u_char                         *value;
-} nxt_http_cookie_t;
-
-
 struct nxt_http_route_rule_s {
     /* The object must be the first field. */
     nxt_http_route_object_t        object:8;
