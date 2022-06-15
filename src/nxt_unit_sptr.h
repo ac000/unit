@@ -24,7 +24,10 @@ union nxt_unit_sptr_u {
 static inline void
 nxt_unit_sptr_set(nxt_unit_sptr_t *sptr, void *ptr)
 {
-    sptr->offset = (uint8_t *) ptr - sptr->base;
+    const uint8_t  *base;
+
+    base = sptr->base;
+    sptr->offset = (uint8_t *) ptr - base;
 }
 
 
