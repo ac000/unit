@@ -7,6 +7,10 @@
 #include <nxt_main.h>
 
 
+extern inline void nxt_ustr2str(char *restrict dst, const u_char *restrict src,
+    size_t length);
+
+
 nxt_str_t *
 nxt_str_alloc(nxt_mp_t *mp, size_t length)
 {

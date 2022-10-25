@@ -58,6 +58,9 @@ struct nxt_str_s {
 };
 
 
+NXT_EXPORT inline void nxt_ustr2str(char *restrict dst,
+    const u_char *restrict src, size_t length);
+
 NXT_EXPORT void nxt_memcpy_lowcase(u_char *dst, const u_char *src,
     size_t length);
 NXT_EXPORT void nxt_memcpy_upcase(u_char *dst, const u_char *src,
@@ -169,6 +172,14 @@ NXT_EXPORT nxt_bool_t nxt_is_complex_uri_encoded(u_char *s, size_t length);
 NXT_EXPORT ssize_t nxt_base64_decode(u_char *dst, u_char *src, size_t length);
 
 extern const uint8_t  nxt_hex2int[256];
+
+
+inline void
+nxt_ustr2str(char *restrict dst, const u_char *restrict src, size_t length)
+{
+    memcpy(dst, src, length);
+    dst[length] = '\0';
+}
 
 
 #endif /* _NXT_STRING_H_INCLUDED_ */
