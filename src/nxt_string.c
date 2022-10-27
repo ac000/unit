@@ -9,6 +9,8 @@
 
 extern inline void nxt_ustr2str(char *restrict dst, const u_char *restrict src,
     size_t length);
+extern inline void nxt_usts2str(char *restrict dst,
+    const nxt_str_t *restrict src);
 
 
 nxt_str_t *
