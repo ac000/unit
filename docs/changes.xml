@@ -33,6 +33,12 @@ NGINX Unit updated to 1.29.0.
 
 <change type="change">
 <para>
+require GNU C11.
+</para>
+</change>
+
+<change type="change">
+<para>
 removed $uri auto-append for "share" when loading configuration.
 </para>
 </change>
