@@ -8,6 +8,10 @@
 #define _NXT_STRING_H_INCLUDED_
 
 
+/* Workaround for Ruby bug #18893 */
+#undef memcpy
+
+
 #define nxt_lowcase(c)                                                        \
     (u_char) ((c >= 'A' && c <= 'Z') ? c | 0x20 : c)
 
