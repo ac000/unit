@@ -45,6 +45,15 @@
     (void) memcpy(dst, src, length)
 
 
+typedef struct nxt_str_s  nxt_str_t;
+
+
+struct nxt_str_s {
+    size_t                    length;
+    u_char                    *start;
+};
+
+
 NXT_EXPORT void nxt_memcpy_lowcase(u_char *dst, const u_char *src,
     size_t length);
 NXT_EXPORT void nxt_memcpy_upcase(u_char *dst, const u_char *src,
@@ -89,12 +98,6 @@ NXT_EXPORT u_char *nxt_memcasestrn(const u_char *s, const u_char *end,
 NXT_EXPORT u_char *nxt_rmemstrn(const u_char *s, const u_char *end,
     const char *ss, size_t length);
 NXT_EXPORT size_t nxt_str_strip(const u_char *start, u_char *end);
-
-
-typedef struct {
-    size_t                    length;
-    u_char                    *start;
-} nxt_str_t;
 
 
 #define nxt_string(str)       { nxt_length(str), (u_char *) str }
