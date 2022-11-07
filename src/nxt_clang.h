@@ -256,7 +256,7 @@ nxt_popcount(unsigned int x)
 
 
 #define nxt_length(s)                                                         \
-    (sizeof(s) - 1)
+    (nxt_sizeof_array(s) - 1)
 
 
 #endif /* _NXT_CLANG_H_INCLUDED_ */
