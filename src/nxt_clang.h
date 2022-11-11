@@ -13,6 +13,43 @@
 #define nxt_cdecl
 
 
+#if (NXT_HAVE_C11_GENERIC)
+#define nxt_char_cast(t, p)                                                   \
+    _Generic(&*(p),                                                           \
+    u_char *:                                                                 \
+        _Generic((t) NULL,                                                    \
+        char *:             (t) (p),                                          \
+        const char *:       (t) (p),                                          \
+        default:                (p)),                                         \
+    u_char **:                                                                \
+        _Generic((t) NULL,                                                    \
+        char **:            (t) (p),                                          \
+        default:                (p)),                                         \
+    const u_char *:                                                           \
+        _Generic((t) NULL,                                                    \
+        const char *:       (t) (p),                                          \
+        default:                (p)),                                         \
+    char *:                                                                   \
+        _Generic((t) NULL,                                                    \
+        u_char *:           (t) (p),                                          \
+        const u_char *:     (t) (p),                                          \
+        default:                (p)),                                         \
+    char **:                                                                  \
+        _Generic((t) NULL,                                                    \
+        u_char **:          (t) (p),                                          \
+        default:                (p)),                                         \
+    const char *:                                                             \
+        _Generic((t) NULL,                                                    \
+        const u_char *:     (t) (p),                                          \
+        default:                (p)),                                         \
+    default:                                                                  \
+                                (p)                                           \
+    )
+#else
+#define nxt_char_cast(t, p)  ((t) (p))
+#endif
+
+
 #if (NXT_CLANG)
 
 /* Any __asm__ directive disables loop vectorization in GCC and Clang. */
