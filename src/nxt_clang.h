@@ -251,6 +251,10 @@ nxt_popcount(unsigned int x)
     (u_char *) ((uintptr_t) (p) & ~((uintptr_t) (a) - 1))
 
 
+#define nxt_sizeof_array(a)                                                   \
+    (sizeof(a) + (0 * nxt_nitems(a)))
+
+
 #define nxt_length(s)                                                         \
     (sizeof(s) - 1)
 
