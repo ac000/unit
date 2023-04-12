@@ -391,6 +391,16 @@ static nxt_conf_map_t  nxt_wasm_wc_app_conf[] = {
 };
 
 
+static nxt_conf_map_t  nxt_skel_app_conf[] = {
+    {
+        nxt_string("module"),
+        NXT_CONF_MAP_CSTRZ,
+        offsetof(nxt_common_app_conf_t, u.skel.module),
+    },
+
+};
+
+
 static nxt_conf_app_map_t  nxt_app_maps[] = {
     { nxt_nitems(nxt_external_app_conf),  nxt_external_app_conf },
     { nxt_nitems(nxt_python_app_conf),    nxt_python_app_conf },
@@ -400,6 +410,7 @@ static nxt_conf_app_map_t  nxt_app_maps[] = {
     { nxt_nitems(nxt_java_app_conf),      nxt_java_app_conf },
     { nxt_nitems(nxt_wasm_app_conf),      nxt_wasm_app_conf },
     { nxt_nitems(nxt_wasm_wc_app_conf),   nxt_wasm_wc_app_conf },
+    { nxt_nitems(nxt_skel_app_conf),      nxt_skel_app_conf },
 };
 
 

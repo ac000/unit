@@ -288,6 +288,7 @@ static const nxt_str_t  *nxt_app_msg_prefix[] = {
     [NXT_APP_JAVA]      = &empty_prefix,
     [NXT_APP_WASM]      = &empty_prefix,
     [NXT_APP_WASM_WC]   = &empty_prefix,
+    [NXT_APP_SKEL]      = &empty_prefix,
 };
 
 

@@ -1114,6 +1114,9 @@ nxt_app_parse_type(u_char *p, size_t length)
 
     } else if (nxt_str_eq(&str, "wasm", 4)) {
         return NXT_APP_WASM;
+
+    } else if (nxt_str_eq(&str, "skel", 4)) {
+        return NXT_APP_SKEL;
     }
 
     return NXT_APP_UNKNOWN;

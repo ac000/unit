@@ -88,4 +88,7 @@ cat << END
                        run "./configure wasm-wasi-component --help" to see
                        available options
 
+  skel OPTIONS	       configure SKEL module
+		       run "./configure skel --help" to see available options
+
 END

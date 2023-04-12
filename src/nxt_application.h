@@ -23,6 +23,7 @@ typedef enum {
     NXT_APP_JAVA,
     NXT_APP_WASM,
     NXT_APP_WASM_WC,
+    NXT_APP_SKEL,
 
     NXT_APP_UNKNOWN,
 } nxt_app_type_t;
@@ -113,6 +114,11 @@ typedef struct {
 } nxt_wasm_wc_app_conf_t;
 
 
+typedef struct {
+    char  *module;
+} nxt_skel_app_conf_t;
+
+
 struct nxt_common_app_conf_s {
     nxt_str_t                  name;
     nxt_str_t                  type;
@@ -143,6 +149,7 @@ struct nxt_common_app_conf_s {
         nxt_java_app_conf_t      java;
         nxt_wasm_app_conf_t      wasm;
         nxt_wasm_wc_app_conf_t   wasm_wc;
+        nxt_skel_app_conf_t      skel;
     } u;
 
     nxt_conf_value_t           *self;
