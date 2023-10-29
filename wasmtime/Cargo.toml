@@ -15,7 +15,7 @@ http = "0.2.9"
 http-body = { version = "1.0.0-rc.2", default-features = false }
 http-body-util = "0.1.0-rc.2"
 tokio = { version = "1.33.0", default-features = false }
-wasmtime = "14.0.2"
+wasmtime = { version = "14.0.2", default-features = false, features = ['component-model', 'cranelift'] }
 wasmtime-wasi = "14.0.2"
 wasmtime-wasi-http = "14.0.2"
 
@@ -28,3 +28,6 @@ panic = 'abort'
 
 [profile.release]
 panic = 'abort'
+
+[workspace]
+members = ['example']

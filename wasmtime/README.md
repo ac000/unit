@@ -26,4 +26,44 @@ notably:
 
 ## Building
 
-The sample implementation here is written in Rust.
+The sample implementation here is written in Rust. Communication with UNIT is
+done via FFI. First the UNIT server must be compiled:
+
+```
+./configure ...
+make
+```
+
+Next Rust bindings will use the `nxt_unit.c` file so that object must built:
+
+```
+make build/src/nxt_unit.o
+```
+
+Next the Rust bindings can be built with
+
+```
+cargo build --release --manifest-path wasmtime/Cargo.toml
+```
+
+This will use [`bindgen`](https://crates.io/crates/bindgen) to create
+auto-generated FFI bindings between UNIT and Rust. This ensures that if header
+files in UNIT change then Rust code will fail to compile if not updated.
+
+The output of compilation is located at
+`wasmtime/target/release/libnxt_wasmtime.so`. This file can then be placed in
+`$UNIT_LIBDIR/unit/modules/wasmtime.unit.so`.
+
+## Example Project
+
+An example component is located in the `wasmtime/example` directory with the
+bulk of the source code living in `wasmtime/example/src/lib.rs`. Building this
+example can be done with:
+
+```
+cargo build --target wasm32-wasi --release --manifest-path wasmtime/example/Cargo.toml
+```
+
+The output core wasm module is located at
+`wasmtime/target/wasm32-wasi/release/example.wasm`. Note that the Wasmtime
+module above takes components as an input, however.
