@@ -127,3 +127,17 @@ content-type = application/x-www-form-urlencoded
 [Request Data]
 xyzabcd
 ```
+
+## Running the same component in Wasmtime
+
+As an example, the same component can be executed in Wasmtime:
+
+```
+$ wasmtime serve wasmtime/target/wasm32-wasi/release/example.component.wasm
+```
+
+```
+$ curl http://localhost:8080/hello\?a\=b -d 'xyzabcd'
+<same as above>
+```
+```
