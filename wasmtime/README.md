@@ -56,6 +56,10 @@ The output of compilation is located at
 
 ## Example Project
 
+> **Note**: This walks through some manual steps for Rust to show what's going
+> on, but if you're actually using Rust you'll probably use [`cargo
+> component`](https://github.com/bytecodealliance/cargo-component/)
+
 An example component is located in the `wasmtime/example` directory with the
 bulk of the source code living in `wasmtime/example/src/lib.rs`. Building this
 example can be done with:
@@ -66,4 +70,60 @@ cargo build --target wasm32-wasi --release --manifest-path wasmtime/example/Carg
 
 The output core wasm module is located at
 `wasmtime/target/wasm32-wasi/release/example.wasm`. Note that the Wasmtime
-module above takes components as an input, however.
+module above takes components as an input, however. To create a component first
+install the [`wasm-tools`](https://github.com/bytecodealliance/wasm-tools)
+repository. Next create the component with:
+
+```
+wasm-tools component new \
+  wasmtime/target/wasm32-wasi/release/example.wasm \
+  --adapt ./wasmtime/example/wasi_snapshot_preview1.reactor.wasm \
+  -o wasmtime/target/wasm32-wasi/release/example.component.wasm
+```
+
+This will create a component at
+`wasmtime/target/wasm32-wasi/release/example.component.wasm`. This can then be
+configured as:
+
+```
+curl -X PUT --data-binary '{
+      "listeners": {
+          "127.0.0.1:8080": {
+              "pass": "applications/wasm"
+          }
+      },
+
+      "applications": {
+          "wasm": {
+              "type": "wasm",
+              "module": "/path/to/example.component.wasm",
+              "request_handler": "<unused>",
+              "malloc_handler": "<unused>",
+              "free_handler": "<unused>",
+          }
+      }
+  }' --unix-socket $HOME/unit/var/run/unit/control.unit.sock http://localhost/config/
+```
+
+Next you can curl with:
+
+```
+$ curl -v http://localhost:8080/hello\?a\=b -d 'xyzabcd'
+ * Welcome to the component model in Rust! *
+
+[Request Info]
+REQUEST_PATH = /hello?a=b
+METHOD = POST
+SCHEME = http
+AUTHORITY = localhost
+
+[Request Headers]
+host = localhost:8080
+user-agent = curl/7.81.0
+accept = */*
+content-length = 7
+content-type = application/x-www-form-urlencoded
+
+[Request Data]
+xyzabcd
+```
