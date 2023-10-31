@@ -136,9 +136,9 @@ unsafe fn handle_result(
         let log = (*task).log;
         let msg = CString::new(msg).unwrap();
         ((*log).handler).unwrap()(
-            bindings::NXT_LOG_ALERT as usize,
+            bindings::NXT_LOG_ALERT as bindings::nxt_uint_t,
             log,
-            "%s\0".as_ptr(),
+            "%s\0".as_ptr().cast(),
             msg.as_ptr(),
         );
     }
@@ -487,9 +487,9 @@ impl NxtRequestInfo {
         unsafe {
             let rc = bindings::nxt_unit_response_add_field(
                 self.info,
-                key.as_ptr(),
+                key.as_ptr().cast(),
                 key.len().try_into().unwrap(),
-                val.as_ptr(),
+                val.as_ptr().cast(),
                 val.len().try_into().unwrap(),
             );
             assert_eq!(rc, 0);
