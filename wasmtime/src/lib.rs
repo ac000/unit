@@ -284,7 +284,7 @@ impl GlobalState {
             Ok(response) => response.context("response generation failed")?,
             Err(_) => {
                 task.await.unwrap()?;
-                panic!("sneder of response disappeared");
+                panic!("sender of response disappeared");
             }
         };
 
