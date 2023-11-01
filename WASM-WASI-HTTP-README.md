@@ -1,12 +1,10 @@
 # Wasmtime Unit Module
 
 This directory contains a sample implementation of using Wasmtime to implement a
-Unit module which can be loaded into `unitd`. Currently this implementation
-feigns looking like the "wasm" module but operates differently internally,
-notably:
+Unit module which can be loaded into `unitd`. This uses a language module type
+of `wasm-wasi-http`.
 
-* The `module` configuration field when loading wasm is interpreted instead as a
-  WebAssembly component. This component is expected to the [`wasi:http/proxy`
+* The specified `component` is expected to adhere to [`wasi:http/proxy`
   world][proxy].
 
 * Each request instantiates a new component. Previously a single instance was
@@ -43,7 +41,7 @@ make build/src/nxt_unit.o
 Next the Rust bindings can be built with
 
 ```
-cargo build --release --manifest-path wasmtime/Cargo.toml
+cargo build --release --manifest-path src/wasm-wasi-http/Cargo.toml
 ```
 
 This will use [`bindgen`](https://crates.io/crates/bindgen) to create
@@ -51,7 +49,8 @@ auto-generated FFI bindings between UNIT and Rust. This ensures that if header
 files in UNIT change then Rust code will fail to compile if not updated.
 
 The output of compilation is located at
-`wasmtime/target/release/libnxt_wasmtime.so`. This file can then be placed in
+`src/wasm-wasi-http/target/release/libnxt_wasmtime.so`. This file can then be
+placed in
 `$UNIT_LIBDIR/unit/modules/wasmtime.unit.so`.
 
 ## Example Project
@@ -60,30 +59,32 @@ The output of compilation is located at
 > on, but if you're actually using Rust you'll probably use [`cargo
 > component`](https://github.com/bytecodealliance/cargo-component/)
 
-An example component is located in the `wasmtime/example` directory with the
-bulk of the source code living in `wasmtime/example/src/lib.rs`. Building this
-example can be done with:
+An example component is located in the `src/wasm-wasi-http/example` directory
+with the bulk of the source code living in
+`src/wasm-wasi-http/example/src/lib.rs`. Building this example can be done
+with:
 
 ```
-cargo build --target wasm32-wasi --release --manifest-path wasmtime/example/Cargo.toml
+cargo build --target wasm32-wasi --release --manifest-path src/wasm-wasi-http/example/Cargo.toml
 ```
 
 The output core wasm module is located at
-`wasmtime/target/wasm32-wasi/release/example.wasm`. Note that the Wasmtime
-module above takes components as an input, however. To create a component first
-install the [`wasm-tools`](https://github.com/bytecodealliance/wasm-tools)
-repository. Next create the component with:
+`src/wasm-wasi-http/target/wasm32-wasi/release/example.wasm`. Note that the
+Wasmtime module above takes components as an input, however. To create a
+component first install the
+[`wasm-tools`](https://github.com/bytecodealliance/wasm-tools) repository.
+Next create the component with:
 
 ```
 wasm-tools component new \
-  wasmtime/target/wasm32-wasi/release/example.wasm \
-  --adapt ./wasmtime/example/wasi_snapshot_preview1.reactor.wasm \
-  -o wasmtime/target/wasm32-wasi/release/example.component.wasm
+  src/wasm-wasi-http/target/wasm32-wasi/release/example.wasm \
+  --adapt ./src/wasm-wasi-http/example/wasi_snapshot_preview1.reactor.wasm \
+  -o src/wasm-wasi-http/target/wasm32-wasi/release/example.component.wasm
 ```
 
 This will create a component at
-`wasmtime/target/wasm32-wasi/release/example.component.wasm`. This can then be
-configured as:
+`src/wasm-wasi-http/target/wasm32-wasi/release/example.component.wasm`. This
+can then be configured as:
 
 ```
 curl -X PUT --data-binary '{
@@ -95,11 +96,8 @@ curl -X PUT --data-binary '{
 
       "applications": {
           "wasm": {
-              "type": "wasm",
-              "module": "/path/to/example.component.wasm",
-              "request_handler": "<unused>",
-              "malloc_handler": "<unused>",
-              "free_handler": "<unused>",
+              "type": "wasm-wasi-http",
+              "component": "/path/to/example.component.wasm"
           }
       }
   }' --unix-socket $HOME/unit/var/run/unit/control.unit.sock http://localhost/config/
