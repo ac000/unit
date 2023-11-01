@@ -1058,12 +1058,15 @@ static nxt_conf_vldt_object_t  nxt_conf_vldt_wasm_members[] = {
     }, {
         .name       = nxt_string("request_handler"),
         .type       = NXT_CONF_VLDT_STRING,
+        .flags      = NXT_CONF_VLDT_REQUIRED,
     },{
         .name       = nxt_string("malloc_handler"),
         .type       = NXT_CONF_VLDT_STRING,
+        .flags      = NXT_CONF_VLDT_REQUIRED,
     }, {
         .name       = nxt_string("free_handler"),
         .type       = NXT_CONF_VLDT_STRING,
+        .flags      = NXT_CONF_VLDT_REQUIRED,
     }, {
         .name       = nxt_string("module_init_handler"),
         .type       = NXT_CONF_VLDT_STRING,
