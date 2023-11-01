@@ -22,6 +22,7 @@ typedef enum {
     NXT_APP_RUBY,
     NXT_APP_JAVA,
     NXT_APP_WASM,
+    NXT_APP_WASM_WASI_HTTP,
 
     NXT_APP_UNKNOWN,
 } nxt_app_type_t;
@@ -104,6 +105,13 @@ typedef struct {
 } nxt_wasm_app_conf_t;
 
 
+typedef struct {
+    const char        *component;
+
+    nxt_conf_value_t  *access;
+} nxt_wasm_wasi_http_app_conf_t;
+
+
 struct nxt_common_app_conf_s {
     nxt_str_t                  name;
     nxt_str_t                  type;
@@ -126,13 +134,14 @@ struct nxt_common_app_conf_s {
     nxt_fd_t                   shared_queue_fd;
 
     union {
-        nxt_external_app_conf_t  external;
-        nxt_python_app_conf_t    python;
-        nxt_php_app_conf_t       php;
-        nxt_perl_app_conf_t      perl;
-        nxt_ruby_app_conf_t      ruby;
-        nxt_java_app_conf_t      java;
-        nxt_wasm_app_conf_t      wasm;
+        nxt_external_app_conf_t         external;
+        nxt_python_app_conf_t           python;
+        nxt_php_app_conf_t              php;
+        nxt_perl_app_conf_t             perl;
+        nxt_ruby_app_conf_t             ruby;
+        nxt_java_app_conf_t             java;
+        nxt_wasm_app_conf_t             wasm;
+        nxt_wasm_wasi_http_app_conf_t   wasm_wasi_http;
     } u;
 
     nxt_conf_value_t           *self;

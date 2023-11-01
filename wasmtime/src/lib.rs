@@ -43,7 +43,7 @@ pub static mut nxt_app_module: bindings::nxt_app_module_t = {
         compat_length: COMPAT.len() * 4,
         mounts: ptr::null(),
         nmounts: 0,
-        type_: bindings::nxt_string("wasm"),
+        type_: bindings::nxt_string("wasm-wasi-http"),
         version: version.as_ptr().cast(),
         setup: Some(setup),
         start: Some(start),
@@ -60,8 +60,8 @@ unsafe extern "C" fn setup(
     conf: *mut bindings::nxt_common_app_conf_t,
 ) -> bindings::nxt_int_t {
     handle_result(task, || {
-        let wasm_conf = &(*conf).u.wasm;
-        let component = CStr::from_ptr(wasm_conf.module).to_str()?;
+        let wasm_conf = &(*conf).u.wasm_wasi_http;
+        let component = CStr::from_ptr(wasm_conf.component).to_str()?;
         let mut dirs = Vec::new();
         if !wasm_conf.access.is_null() {
             let dirs_ptr = bindings::nxt_conf_get_object_member(

@@ -377,14 +377,29 @@ static nxt_conf_map_t  nxt_wasm_app_conf[] = {
 };
 
 
+static nxt_conf_map_t  nxt_wasm_wasi_http_app_conf[] = {
+    {
+        nxt_string("component"),
+        NXT_CONF_MAP_CSTRZ,
+        offsetof(nxt_common_app_conf_t, u.wasm_wasi_http.component),
+    },
+    {
+        nxt_string("access"),
+        NXT_CONF_MAP_PTR,
+        offsetof(nxt_common_app_conf_t, u.wasm_wasi_http.access),
+    },
+};
+
+
 static nxt_conf_app_map_t  nxt_app_maps[] = {
-    { nxt_nitems(nxt_external_app_conf),  nxt_external_app_conf },
-    { nxt_nitems(nxt_python_app_conf),    nxt_python_app_conf },
-    { nxt_nitems(nxt_php_app_conf),       nxt_php_app_conf },
-    { nxt_nitems(nxt_perl_app_conf),      nxt_perl_app_conf },
-    { nxt_nitems(nxt_ruby_app_conf),      nxt_ruby_app_conf },
-    { nxt_nitems(nxt_java_app_conf),      nxt_java_app_conf },
-    { nxt_nitems(nxt_wasm_app_conf),      nxt_wasm_app_conf },
+    { nxt_nitems(nxt_external_app_conf),        nxt_external_app_conf },
+    { nxt_nitems(nxt_python_app_conf),          nxt_python_app_conf },
+    { nxt_nitems(nxt_php_app_conf),             nxt_php_app_conf },
+    { nxt_nitems(nxt_perl_app_conf),            nxt_perl_app_conf },
+    { nxt_nitems(nxt_ruby_app_conf),            nxt_ruby_app_conf },
+    { nxt_nitems(nxt_java_app_conf),            nxt_java_app_conf },
+    { nxt_nitems(nxt_wasm_app_conf),            nxt_wasm_app_conf },
+    { nxt_nitems(nxt_wasm_wasi_http_app_conf),  nxt_wasm_wasi_http_app_conf },
 };
 
 

@@ -1093,6 +1093,22 @@ static nxt_conf_vldt_object_t  nxt_conf_vldt_wasm_members[] = {
 };
 
 
+static nxt_conf_vldt_object_t  nxt_conf_vldt_wasm_wasi_http_members[] = {
+    {
+        .name       = nxt_string("component"),
+        .type       = NXT_CONF_VLDT_STRING,
+        .flags      = NXT_CONF_VLDT_REQUIRED,
+    }, {
+        .name       = nxt_string("access"),
+        .type       = NXT_CONF_VLDT_OBJECT,
+        .validator  = nxt_conf_vldt_object,
+        .u.members  = nxt_conf_vldt_wasm_access_members,
+    },
+
+    NXT_CONF_VLDT_NEXT(nxt_conf_vldt_common_members)
+};
+
+
 static nxt_conf_vldt_object_t  nxt_conf_vldt_wasm_access_members[] = {
     {
         .name       = nxt_string("filesystem"),
@@ -2617,6 +2633,7 @@ nxt_conf_vldt_app(nxt_conf_validation_t *vldt, nxt_str_t *name,
         { nxt_conf_vldt_object, nxt_conf_vldt_ruby_members },
         { nxt_conf_vldt_object, nxt_conf_vldt_java_members },
         { nxt_conf_vldt_object, nxt_conf_vldt_wasm_members },
+        { nxt_conf_vldt_object, nxt_conf_vldt_wasm_wasi_http_members },
     };
 
     ret = nxt_conf_vldt_type(vldt, name, value, NXT_CONF_VLDT_OBJECT);

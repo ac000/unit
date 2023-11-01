@@ -274,13 +274,14 @@ static const nxt_str_t http_prefix = nxt_string("HTTP_");
 static const nxt_str_t empty_prefix = nxt_string("");
 
 static const nxt_str_t  *nxt_app_msg_prefix[] = {
-    [NXT_APP_EXTERNAL]  = &empty_prefix,
-    [NXT_APP_PYTHON]    = &empty_prefix,
-    [NXT_APP_PHP]       = &http_prefix,
-    [NXT_APP_PERL]      = &http_prefix,
-    [NXT_APP_RUBY]      = &http_prefix,
-    [NXT_APP_JAVA]      = &empty_prefix,
-    [NXT_APP_WASM]      = &empty_prefix,
+    [NXT_APP_EXTERNAL]          = &empty_prefix,
+    [NXT_APP_PYTHON]            = &empty_prefix,
+    [NXT_APP_PHP]               = &http_prefix,
+    [NXT_APP_PERL]              = &http_prefix,
+    [NXT_APP_RUBY]              = &http_prefix,
+    [NXT_APP_JAVA]              = &empty_prefix,
+    [NXT_APP_WASM]              = &empty_prefix,
+    [NXT_APP_WASM_WASI_HTTP]    = &empty_prefix,
 };
 
 
