@@ -65,26 +65,26 @@ with the bulk of the source code living in
 with:
 
 ```
-cargo build --target wasm32-wasi --release --manifest-path src/wasm-wasi-http/example/Cargo.toml
+cargo build --target wasm32-wasi --release --manifest-path wasm-wasi-http-example/Cargo.toml
 ```
 
 The output core wasm module is located at
-`src/wasm-wasi-http/target/wasm32-wasi/release/example.wasm`. Note that the
-Wasmtime module above takes components as an input, however. To create a
+`wasm-wasi-http-example/target/wasm32-wasi/release/example.wasm`. Note that
+the Wasmtime module above takes components as an input, however. To create a
 component first install the
 [`wasm-tools`](https://github.com/bytecodealliance/wasm-tools) repository.
 Next create the component with:
 
 ```
 wasm-tools component new \
-  src/wasm-wasi-http/target/wasm32-wasi/release/example.wasm \
-  --adapt ./src/wasm-wasi-http/example/wasi_snapshot_preview1.reactor.wasm \
-  -o src/wasm-wasi-http/target/wasm32-wasi/release/example.component.wasm
+  wasm-wasi-http-example/target/wasm32-wasi/release/example.wasm \
+  --adapt ./wasm-wasi-http-example/wasi_snapshot_preview1.reactor.wasm \
+  -o wasm-wasi-http-example/target/wasm32-wasi/release/example.component.wasm
 ```
 
 This will create a component at
-`src/wasm-wasi-http/target/wasm32-wasi/release/example.component.wasm`. This
-can then be configured as:
+`wasm-wasi-http-example/target/wasm32-wasi/release/example.component.wasm`.
+This can then be configured as:
 
 ```
 curl -X PUT --data-binary '{
@@ -131,7 +131,7 @@ xyzabcd
 As an example, the same component can be executed in Wasmtime:
 
 ```
-$ wasmtime serve wasmtime/target/wasm32-wasi/release/example.component.wasm
+$ wasmtime serve wasm-wasi-http-example/target/wasm32-wasi/release/example.component.wasm
 ```
 
 ```
