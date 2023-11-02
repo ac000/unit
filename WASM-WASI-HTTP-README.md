@@ -32,6 +32,17 @@ done via FFI. First the UNIT server must be compiled:
 make
 ```
 
+Now you can simply
+
+```
+./configure wasm-wasi-http
+make install
+```
+
+### Under the covers
+
+This is what the above `configure` does...
+
 Next Rust bindings will use the `nxt_unit.c` file so that object must built:
 
 ```
