@@ -1,0 +1,115 @@
+# Copyright (C) Andrew Clayton
+# Copyright (C) F5, Inc.
+
+
+NXT_WWH_MODULE=wasm-wasi-http
+NXT_WWH_MOD_NAME=`echo $NXT_WWH_MODULE | tr '-' '_'`.unit.so
+
+
+shift
+
+for nxt_option; do
+
+    case "$nxt_option" in
+        -*=*) value=`echo "$nxt_option" | sed -e 's/[-_a-zA-Z0-9]*=//'`     ;;
+           *) value="" ;;
+    esac
+
+    case "$nxt_option" in
+
+        --help)
+            cat << END
+
+END
+            exit 0
+        ;;
+
+        *)
+            echo
+            echo $0: error: invalid wasm option \"$nxt_option\"
+            echo
+            exit 1
+        ;;
+    esac
+
+done
+
+
+if [ ! -f $NXT_AUTOCONF_DATA ]; then
+   echo
+   echo Please run common $0 before configuring module \"$nxt_module\".
+   echo
+   exit 1
+fi
+
+. $NXT_AUTOCONF_DATA
+
+NXT_WWH_WASM_TOOLS_BIN=${NXT_WWH_WASM_TOOLS_BIN=}
+
+
+$echo "configuring $NXT_WWH_MODULE module"
+$echo "configuring $NXT_WWH_MODULE module ..." >> $NXT_AUTOCONF_ERR
+
+$echo -n "Looking for rust compiler ... "
+
+if [ -z `which rustc 2>/dev/null` ]; then
+    $echo "not found."
+    exit 1;
+fi
+
+if [ -z "`rustc --print target-list | grep wasm32-wasi$`" ]; then
+    $echo "found but lacking wasm32-wasi support."
+    exit 1;
+fi
+
+$echo "found."
+
+$echo -n "Looking for cargo ... "
+
+if [ -z `which cargo 2>/dev/null` ]; then
+    $echo "not found."
+    exit 1;
+fi
+
+$echo "found."
+
+
+if grep ^$NXT_WWH_MODULE: $NXT_MAKEFILE 2>&1 > /dev/null; then
+    $echo
+    $echo $0: error: duplicate \"$NXT_WWH_MODULE\" module configured.
+    $echo
+    exit 1;
+fi
+
+
+$echo " + $NXT_WWH_MODULE module: $NXT_WWH_MOD_NAME"
+
+
+cat << END >> $NXT_MAKEFILE
+
+.PHONY: ${NXT_WWH_MODULE}
+.PHONY: ${NXT_WWH_MODULE}-install
+.PHONY: ${NXT_WWH_MODULE}-uninstall
+
+all: ${NXT_WWH_MODULE}
+
+${NXT_WWH_MODULE}:  $NXT_BUILD_DIR/lib/unit/modules/$NXT_WWH_MOD_NAME
+
+$NXT_BUILD_DIR/lib/unit/modules/$NXT_WWH_MOD_NAME:
+	make build/src/nxt_unit.o
+	cargo build --release --manifest-path src/wasm-wasi-http/Cargo.toml
+
+install: ${NXT_WWH_MODULE}-install
+
+${NXT_WWH_MODULE}-install: ${NXT_WWH_MODULE} install-check
+	install -d \$(DESTDIR)$NXT_MODULESDIR
+	install -p src/wasm-wasi-http/target/release/libnxt_wasmtime.so \\
+		\$(DESTDIR)$NXT_MODULESDIR/$NXT_WWH_MOD_NAME
+
+uninstall: ${NXT_WWH_MODULE}-uninstall
+
+${NXT_WWH_MODULE}-uninstall:
+	rm -f \$(DESTDIR)$NXT_MODULESDIR/$NXT_WWH_MOD_NAME
+	@rmdir -p \$(DESTDIR)$NXT_MODULESDIR 2>/dev/null || true
+
+END
