@@ -50,7 +50,7 @@ NXT_WWH_WASM_TOOLS_BIN=${NXT_WWH_WASM_TOOLS_BIN=}
 $echo "configuring $NXT_WWH_MODULE module"
 $echo "configuring $NXT_WWH_MODULE module ..." >> $NXT_AUTOCONF_ERR
 
-$echo -n "Looking for rust compiler ... "
+$echo -n "looking for rust compiler ... "
 
 if [ -z `which rustc 2>/dev/null` ]; then
     $echo "not found."
@@ -64,7 +64,7 @@ fi
 
 $echo "found."
 
-$echo -n "Looking for cargo ... "
+$echo -n "looking for cargo ... "
 
 if [ -z `which cargo 2>/dev/null` ]; then
     $echo "not found."
